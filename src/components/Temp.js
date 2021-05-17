@@ -20,7 +20,7 @@ const Temp = ({ list }) => {
         })
         .then(blob => {
             list.push({
-                name: '',
+                name: url,
                 src: URL.createObjectURL(blob)
             })
             tempImg.current.src = URL.createObjectURL(blob)
@@ -29,19 +29,13 @@ const Temp = ({ list }) => {
     }
 
     useEffect(_ => {
-        if (list.length > 0) {
-            // setImageCounter(list.length - 1)
+        tempImg.current.src = list[counter]?.src
+        setInterval(_ => {
             const d = new Date()
-            const url = `http://141.138.138.250:88/knmi/${dateString(d)}/${list[list.length - 1].name}`
-            console.log('AAP', list)
+            const url = `http://141.138.138.250:88/knmi/${dateString(d)}/${dateString(d)}${timeString(d)}.png`
+            console.log(dateString(d), timeString(d))
             getTemp(url)
-            setInterval(_ => {
-                const d = new Date()
-                const url = `http://141.138.138.250:88/knmi/${dateString(d)}/${dateString(d)}${timeString(d)}.png`
-                console.log(dateString(d), timeString(d))
-                getTemp(url)
-            }, 1000 * 60)
-        }
+        }, 1000 * 60)
     }, [list])
 
     const prevImage = async _ => {
