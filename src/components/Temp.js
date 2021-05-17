@@ -5,6 +5,8 @@ const Temp = ({ list }) => {
 
     const tempImg = useRef()
     const [imgData, setImgData] = useState(null)
+    // const [imageCounter, setImageCounter] = useState(0)
+    let counter = list.length - 1
 
     const getTemp = url => {
         fetch(url, {
@@ -17,14 +19,23 @@ const Temp = ({ list }) => {
             }
             return response.blob()
         })
-        .then(blob => setImgData(URL.createObjectURL(blob)))
+        // .then(blob => setImgData(URL.createObjectURL(blob)))
+        .then(blob => {
+            list.push({
+                name: '',
+                src: URL.createObjectURL(blob)
+            })
+            tempImg.current.src = URL.createObjectURL(blob)
+        })
         .catch(err => console.error(err))
     }
 
     useEffect(_ => {
         if (list.length > 0) {
+            // setImageCounter(list.length - 1)
             const d = new Date()
-            const url = `http://141.138.138.250:88/knmi/${dateString(d)}/${list[list.length - 1]}`
+            const url = `http://141.138.138.250:88/knmi/${dateString(d)}/${list[list.length - 1].name}`
+            console.log('AAP', list)
             getTemp(url)
             setInterval(_ => {
                 const d = new Date()
@@ -39,8 +50,24 @@ const Temp = ({ list }) => {
         tempImg.current.src = imgData ? imgData : ''
     }, [imgData])
 
+    const prevImage = async _ => {
+        counter = counter > 0 ? counter - 1 : counter
+        tempImg.current.src = list[counter].src
+    }
+
+    const nextImage = _ => {
+        counter = counter < list.length - 1 ? counter + 1 : counter
+        tempImg.current.src = list[counter].src
+    }
+
     return (
-        <img ref={tempImg} style={{alignSelf:'top'}}/>
+        <div>
+            <div style={{ display: 'flex' }}>
+                <button onClick={prevImage}>previous</button>
+                <button onClick={nextImage}>next</button>
+            </div>
+            <img ref={tempImg} style={{alignSelf:'top'}}/>
+        </div>
     )
 }
 
