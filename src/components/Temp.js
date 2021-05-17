@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { dateString, timeString } from '../utils'
 
 const Temp = ({ list }) => {
 
     const tempImg = useRef()
-    const [imgData, setImgData] = useState(null)
-    // const [imageCounter, setImageCounter] = useState(0)
+
     let counter = list.length - 1
 
     const getTemp = url => {
@@ -19,7 +18,6 @@ const Temp = ({ list }) => {
             }
             return response.blob()
         })
-        // .then(blob => setImgData(URL.createObjectURL(blob)))
         .then(blob => {
             list.push({
                 name: '',
@@ -45,10 +43,6 @@ const Temp = ({ list }) => {
             }, 1000 * 60)
         }
     }, [list])
-
-    useEffect(_ => {
-        tempImg.current.src = imgData ? imgData : ''
-    }, [imgData])
 
     const prevImage = async _ => {
         counter = counter > 0 ? counter - 1 : counter
