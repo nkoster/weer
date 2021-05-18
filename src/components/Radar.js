@@ -5,7 +5,7 @@ const Radar = _ => {
     const radarImg = useRef()
 
     const getRadar = _ => {
-        fetch('http://141.138.138.250:88/WWWRADARLGT_loop.gif', {
+        fetch('https://knmi.w3b.net/WWWRADARLGT_loop.gif', {
             method: 'GET',
             mode: 'cors'
         })
@@ -25,7 +25,7 @@ const Radar = _ => {
     }, [])
 
     return (
-        <img ref={radarImg} />
+        <img ref={radarImg} alt='neerslag + bliksem' />
     )
 }
 
