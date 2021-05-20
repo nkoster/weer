@@ -7,38 +7,36 @@ const Temp = ({ list }) => {
 
     let counter = list.length - 1
 
+    const getTemp = url => {
+        fetch(url, {
+            method: 'GET',
+            mode: 'cors'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return response.blob()
+        })
+        .then(blob => {
+            list?.push({
+                name: url,
+                src: URL.createObjectURL(blob)
+            })
+            tempImg.current.src = URL.createObjectURL(blob)
+        })
+        .catch(err => console.error(err))
+    }
+
     useEffect(_ => {
-
-        const getTemp = url => {
-            fetch(url, {
-                method: 'GET',
-                mode: 'cors'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok')
-                }
-                return response.blob()
-            })
-            .then(blob => {
-                list?.push({
-                    name: url,
-                    src: URL.createObjectURL(blob)
-                })
-                tempImg.current.src = URL.createObjectURL(blob)
-            })
-            .catch(err => console.error(err))
-        }
-
         tempImg.current.src = list[counter]?.src
-            setInterval(_ => {
-                const d = new Date()
-                const url = `https://knmi.w3b.net/knmi/${dateString(d)}/${dateString(d)}${timeString(d)}.png`
-                console.log(dateString(d), timeString(d))
-                getTemp(url)
-            }, 1000 * 60)
-            
-    }, [list, counter])
+        setInterval(_ => {
+            const d = new Date()
+            const url = `https://knmi.w3b.net/knmi/${dateString(d)}/${dateString(d)}${timeString(d)}.png`
+            console.log(dateString(d), timeString(d))
+            getTemp(url)
+        }, 1000 * 60)
+    }, [list])
 
     const prevImage = async _ => {
         counter = counter > 0 ? counter - 1 : counter
@@ -56,7 +54,7 @@ const Temp = ({ list }) => {
                 <button onClick={prevImage}>previous</button>
                 <button onClick={nextImage}>next</button>
             </div>
-            <img ref={tempImg} style={{alignSelf:'top'}} alt='temperatuur' />
+            <img ref={tempImg} style={{alignSelf:'top'}}/>
         </div>
     )
 }

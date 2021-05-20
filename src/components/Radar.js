@@ -25,7 +25,7 @@ const Radar = _ => {
     }, [])
 
     return (
-        <img ref={radarImg} alt='neerslag + bliksem' />
+        <img ref={radarImg} />
     )
 }
 
