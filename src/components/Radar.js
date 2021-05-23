@@ -25,7 +25,7 @@ const Radar = _ => {
     }, [])
 
     return (
-        <img ref={radarImg} />
+        <img ref={radarImg} alt='Radar' />
     )
 }
 
