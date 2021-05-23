@@ -53,7 +53,7 @@ const Temp = ({ list }) => {
                 <button onClick={prevImage}>previous</button>
                 <button onClick={nextImage}>next</button>
             </div>
-            <img ref={tempImg} style={{alignSelf:'top'}}/>
+            <img ref={tempImg} style={{alignSelf:'top'}} alt='Temperature' />
         </div>
     )
 }
