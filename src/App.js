@@ -24,47 +24,51 @@ const App = _ => {
     return result
   }
 
-  const fetchList = async _ => {
+  useEffect(_ => {
 
-    const d = new Date()
-    const b = 'https://knmi.w3b.net/knmi/'
-    const url = b + dateString(d) + '/index.php'
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok')
+    const fetchList = async _ => {
+
+      const d = new Date()
+      const b = 'https://knmi.w3b.net/knmi/'
+      const url = b + dateString(d) + '/index.php'
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok')
+          }
+          return response.text()
+      })
+      .catch(err => console.error('ERRRROR:', err))
+  
+      let responseList = response.split('\n')
+      .filter(n => n.includes('<div id="'))
+      .map(n => {
+        return { 
+          name: n.split(' ')[1].split('"')[1],
+          src: getSrc(`${b}${dateString(d)}/${n.split(' ')[1].split('"')[1]}`)
         }
-        return response.text()
-    })
-    .catch(err => console.error('ERRRROR:', err))
-
-    let responseList = response.split('\n')
-    .filter(n => n.includes('<div id="'))
-    .map(n => {
-      return { 
-        name: n.split(' ')[1].split('"')[1],
-        src: getSrc(`${b}${dateString(d)}/${n.split(' ')[1].split('"')[1]}`)
+      })
+      
+      const resolvedList = []
+  
+      for (let i = 0; i < responseList.length; i++) {
+        const s = await responseList[i].src
+        resolvedList.push({
+            name: responseList[i].name,
+            src: s
+        }) 
       }
-    })
-    
-    const resolvedList = []
-
-    for (let i = 0; i < responseList.length; i++) {
-      const s = await responseList[i].src
-      resolvedList.push({
-          name: responseList[i].name,
-          src: s
-      }) 
+  
+      setList(resolvedList)
+  
     }
 
-    setList(resolvedList)
-
-  }
-
-  useEffect(_ => setList(fetchList()), [])
+    setList(fetchList())
+    
+  }, [])
 
   return (
     <div className='App'>
