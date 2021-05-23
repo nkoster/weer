@@ -36,7 +36,7 @@ const Temp = ({ list }) => {
             console.log(dateString(d), timeString(d))
             getTemp(url)
         }, 1000 * 60)
-    }, [list])
+    }, [list, counter])
 
     const prevImage = async _ => {
         counter = counter > 0 ? counter - 1 : counter
