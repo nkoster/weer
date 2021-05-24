@@ -49,11 +49,11 @@ const Temp = ({ list }) => {
 
     return (
         <div>
-            <div style={{ display: 'flex' }}>
-                <button onClick={prevImage}>previous</button>
-                <button onClick={nextImage}>next</button>
+            <div style={{ display: 'flex', justifyContent: 'right' }}>
+                <button onClick={prevImage} style={{ margin: 6 }}>terug</button>
+                <button onClick={nextImage} style={{ margin: 6 }}>volgende</button>
             </div>
-            <img ref={tempImg} style={{alignSelf:'top'}} alt='Temperature' />
+            <img ref={tempImg} style={{alignSelf:'top'}} style={{ margin: 6 }} alt='Temperature' />
         </div>
     )
 }
