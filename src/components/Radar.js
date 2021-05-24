@@ -25,7 +25,7 @@ const Radar = _ => {
     }, [])
 
     return (
-        <img ref={radarImg} alt='Radar' />
+        <img ref={radarImg} alt='Radar' style={{ margin: 6, border: 'solid 2px black' }}/>
     )
 }
 
